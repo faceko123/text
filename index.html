@@ -1,167 +1,359 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="scroll-smooth">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cyber Services | Giải Pháp Số & Mạng Xã Hội</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            black: '#050505',
+                            dark: '#0a0a12',
+                            neonBlue: '#00f3ff',
+                            neonPurple: '#bc13fe',
+                            neonGreen: '#0aff0a',
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                    },
+                    screens: {
+                        'xs': '475px',
+                    }
+                }
+            }
+        }
+    </script>
 
-<title>Deal Hot Shopee</title>
+    <style>
+        /* --- CORE STYLES --- */
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden; /* Ngăn cuộn ngang trên mobile */
+        }
 
-<style>
+        /* Custom Scrollbar (Chỉ hiện trên PC) */
+        @media (min-width: 768px) {
+            ::-webkit-scrollbar { width: 8px; }
+            ::-webkit-scrollbar-track { background: #0a0a12; }
+            ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #00f3ff, #bc13fe); border-radius: 4px; }
+        }
 
-body{
-margin:0;
-font-family:Arial;
-background:linear-gradient(135deg,#ff512f,#dd2476);
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-text-align:center;
-}
+        /* Neon & Glass Effects */
+        .glow-text-purple { text-shadow: 0 0 10px #bc13fe, 0 0 20px #bc13fe; }
+        
+        .glass-card {
+            background: rgba(16, 16, 24, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-.box{
-background:rgba(0,0,0,0.35);
-padding:40px;
-border-radius:15px;
-width:340px;
-}
+        /* Glitch Effect (Giữ nguyên) */
+        .glitch-wrapper { position: relative; display: inline-block; }
+        .glitch-wrapper::before, .glitch-wrapper::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #050505;
+        }
+        .glitch-wrapper::before { left: 2px; text-shadow: -1px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 5s infinite linear alternate-reverse; }
+        .glitch-wrapper::after { left: -2px; text-shadow: -1px 0 #00fff9; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim2 5s infinite linear alternate-reverse; }
+        @keyframes glitch-anim { 0% { clip: rect(30px, 9999px, 10px, 0); } 100% { clip: rect(50px, 9999px, 40px, 0); } }
+        @keyframes glitch-anim2 { 0% { clip: rect(10px, 9999px, 80px, 0); } 100% { clip: rect(30px, 9999px, 10px, 0); } }
 
-.loader{
-border:6px solid rgba(255,255,255,0.3);
-border-top:6px solid white;
-border-radius:50%;
-width:45px;
-height:45px;
-margin:20px auto;
-animation:spin 1s linear infinite;
-}
+        /* Cursor blinking */
+        .cursor { display: inline-block; width: 3px; background-color: #00f3ff; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-@keyframes spin{
-0%{transform:rotate(0)}
-100%{transform:rotate(360deg)}
-}
-
-.btn{
-display:block;
-margin-top:12px;
-padding:12px;
-border-radius:8px;
-text-decoration:none;
-color:white;
-font-weight:bold;
-}
-
-.shopee{
-background:#ff5722;
-}
-
-.telegram{
-background:#0088cc;
-}
-
-#popup{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.7);
-}
-
-.popup-box{
-background:white;
-color:black;
-width:300px;
-margin:200px auto;
-padding:25px;
-border-radius:12px;
-}
-
-</style>
-
-<script>
-
-let shopeeLink="https://shopee.vn/link-cua-ban"
-
-function openShopee(){
-
-window.open(shopeeLink,"_blank")
-
-let click=localStorage.getItem("clickCount")
-
-if(!click){click=0}
-
-click++
-
-localStorage.setItem("clickCount",click)
-
-}
-
-window.onload=function(){
-
-if(localStorage.getItem("visited")=="yes"){
-
-document.getElementById("popup").style.display="block"
-
-openShopee()
-
-}else{
-
-localStorage.setItem("visited","yes")
-
-setTimeout(openShopee,1000)
-
-}
-
-}
-
-</script>
-
+        /* Mobile Menu Transition */
+        #mobile-menu { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
+        #mobile-menu.active { max-height: 400px; opacity: 1; }
+    </style>
 </head>
+<body class="font-rajdhani text-gray-300 antialiased selection:bg-cyber-neonBlue selection:text-black">
 
-<body>
+    <nav class="fixed w-full z-50 top-0 start-0 border-b border-white/10 glass-card">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="#" class="flex items-center space-x-2 rtl:space-x-reverse group">
+                <i class="fa-solid fa-code text-2xl md:text-3xl text-cyber-neonBlue group-hover:animate-pulse"></i>
+                <span class="self-center text-xl md:text-2xl font-orbitron font-bold whitespace-nowrap text-white">CYBER<span class="text-cyber-neonBlue">DEV</span></span>
+            </a>
 
-<div class="box">
+            <button id="mobile-menu-btn" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-400 rounded-lg md:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-cyber-neonBlue">
+                <span class="sr-only">Open main menu</span>
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
 
-<h2>Đang mở Shopee...</h2>
+            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-transparent">
+                    <li><a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-cyber-neonBlue md:p-0" aria-current="page">Home</a></li>
+                    <li><a href="#about" class="block py-2 px-3 text-white hover:text-cyber-neonBlue md:p-0 transition-colors">About</a></li>
+                    <li><a href="#services" class="block py-2 px-3 text-white hover:text-cyber-neonBlue md:p-0 transition-colors">Dịch Vụ</a></li>
+                    <li><a href="#contact" class="block py-2 px-3 text-white hover:text-cyber-neonBlue md:p-0 transition-colors">Liên Hệ</a></li>
+                </ul>
+            </div>
+        </div>
 
-<div class="loader"></div>
+        <div id="mobile-menu" class="md:hidden bg-cyber-dark border-t border-gray-800">
+            <ul class="flex flex-col p-4 font-medium space-y-2">
+                <li>
+                    <a href="#" class="block py-3 px-4 text-white bg-gray-800/50 rounded hover:bg-cyber-neonBlue hover:text-black transition-colors" onclick="toggleMenu()">
+                        <i class="fa-solid fa-house mr-2"></i> Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a href="#about" class="block py-3 px-4 text-white bg-gray-800/50 rounded hover:bg-cyber-neonBlue hover:text-black transition-colors" onclick="toggleMenu()">
+                        <i class="fa-solid fa-user mr-2"></i> Giới thiệu
+                    </a>
+                </li>
+                <li>
+                    <a href="#services" class="block py-3 px-4 text-white bg-gray-800/50 rounded hover:bg-cyber-neonBlue hover:text-black transition-colors" onclick="toggleMenu()">
+                        <i class="fa-solid fa-layer-group mr-2"></i> Dịch vụ
+                    </a>
+                </li>
+                <li>
+                    <a href="#contact" class="block py-3 px-4 text-cyber-neonPurple border border-cyber-neonPurple/30 rounded hover:bg-cyber-neonPurple hover:text-white transition-colors" onclick="toggleMenu()">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Liên hệ ngay
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-<p>Chờ 1 giây để nhận deal</p>
+    <section class="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <canvas id="matrixCanvas" class="absolute top-0 left-0 w-full h-full opacity-20 z-0"></canvas>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cyber-black/80 to-cyber-black z-0 pointer-events-none"></div>
 
-<a class="btn shopee" href="https://shopee.vn/link-cua-ban">
-Mở Shopee ngay
-</a>
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto w-full">
+            <div class="mb-4 inline-block px-3 py-1 border border-cyber-neonBlue/50 rounded-full bg-cyber-neonBlue/10 backdrop-blur-sm" data-aos="fade-down">
+                <span class="text-cyber-neonBlue text-xs md:text-sm font-orbitron tracking-widest">● SYSTEM ONLINE</span>
+            </div>
+            
+            <h1 class="text-4xl xs:text-5xl md:text-7xl font-bold font-orbitron text-white mb-4 md:mb-6 leading-tight" data-aos="zoom-in">
+                DỊCH VỤ <br class="md:hidden"> MẠNG XÃ HỘI <br>
+                <span class="text-2xl xs:text-3xl md:text-6xl text-cyber-neonPurple glow-text-purple mt-2 block">&& GIẢI PHÁP SỐ</span>
+            </h1>
 
-</div>
+            <p class="text-lg md:text-2xl text-gray-400 mb-8 font-light min-h-[30px]" data-aos="fade-up" data-aos-delay="200">
+                <span id="typewriter"></span><span class="cursor">|</span>
+            </p>
 
+            <div class="flex flex-col xs:flex-row gap-4 justify-center items-center w-full px-4" data-aos="fade-up" data-aos-delay="400">
+                <a href="#services" class="w-full xs:w-auto px-8 py-3 bg-cyber-neonBlue text-black font-bold font-orbitron rounded hover:bg-white transition shadow-lg shadow-cyan-500/50 text-center">
+                    KHÁM PHÁ
+                </a>
+                <a href="#contact" class="w-full xs:w-auto px-8 py-3 border border-cyber-neonPurple text-cyber-neonPurple font-bold font-orbitron rounded hover:bg-cyber-neonPurple hover:text-white transition shadow-lg shadow-purple-500/30 text-center">
+                    LIÊN HỆ
+                </a>
+            </div>
+        </div>
+    </section>
 
-<div id="popup">
+    <section id="about" class="py-12 md:py-20 bg-cyber-black relative">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                <div class="w-full md:w-1/2 flex justify-center" data-aos="fade-right">
+                    <div class="relative w-64 h-64 md:w-96 md:h-96">
+                        <div class="absolute inset-0 border-2 border-cyber-neonBlue/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
+                        <div class="absolute inset-4 border-2 border-dashed border-cyber-neonPurple/40 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+                        <div class="absolute inset-4 rounded-full overflow-hidden border-4 border-gray-800 bg-gray-900 flex items-center justify-center">
+                            <img src="https://i.postimg.cc/NftDcyt9/IMG-1759.jpg" class="w-full h-full object-cover"></i>
+                        </div>
+                    </div>
+                </div>
 
-<div class="popup-box">
+                <div class="w-full md:w-1/2 text-center md:text-left" data-aos="fade-left">
+                    <h2 class="text-2xl md:text-4xl font-orbitron font-bold mb-4 text-white">
+                        VỀ MÌNH
+                    </h2>
+                    <p class="text-gray-400 mb-6 leading-relaxed text-sm md:text-base text-justify md:text-left">
+                        Hí anh em, Mình tên là Gia Đạt hiện đang học tại Đại Học Bách Khoa Đà Nẵng ngành IT, mới chập chững bước chân vào nên còn hơi bỡ ngỡ hehe, rất mong được phục vụ một cách tốt nhất nhóoo.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <div class="p-3 glass-card rounded border-t-2 border-cyber-neonBlue">
+                            <div class="text-xl md:text-2xl font-bold text-white">1+ Năm</div>
+                            <div class="text-xs text-gray-400">Kinh Nghiệm</div>
+                        </div>
+                        <div class="p-3 glass-card rounded border-t-2 border-cyber-neonPurple">
+                            <div class="text-xl md:text-2xl font-bold text-white">500+</div>
+                            <div class="text-xs text-gray-400">Khách Hàng</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<h3>Nhận mã giảm giá</h3>
+    <section id="services" class="py-12 md:py-20 bg-cyber-dark relative overflow-hidden">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-10 md:mb-16">
+                <h2 class="text-3xl md:text-5xl font-orbitron font-bold text-white mb-2">DỊCH VỤ</h2>
+                <div class="h-1 w-20 bg-cyber-neonBlue mx-auto rounded"></div>
+            </div>
 
-<p>Tham gia Telegram để nhận deal mới</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <div class="glass-card p-5 md:p-6 rounded-xl border border-white/5 hover:border-cyber-neonBlue transition-all duration-300" data-aos="fade-up" data-aos-delay="0">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="w-10 h-10 bg-gray-900 rounded flex items-center justify-center text-cyber-neonBlue">
+                            <i class="fa-solid fa-thumbs-up"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white font-orbitron">Tăng Tương Tác</h3>
+                    </div>
+                    <p class="text-sm text-gray-400">Like, Follow, View cho Facebook, TikTok. Traffic thật 100%.</p>
+                </div>
 
-<a class="btn telegram" href="https://t.me/linktelegram1">
-Telegram nhóm 1
-</a>
+                <div class="glass-card p-5 md:p-6 rounded-xl border border-white/5 hover:border-cyber-neonPurple transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="w-10 h-10 bg-gray-900 rounded flex items-center justify-center text-cyber-neonPurple">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white font-orbitron">Bảo Mật Kênh</h3>
+                    </div>
+                    <p class="text-sm text-gray-400">Lấy lại nick, bảo mật 2 lớp, kháng cáo fanpage bị hủy đăng.</p>
+                </div>
 
-<a class="btn telegram" href="https://t.me/linktelegram2">
-Telegram nhóm 2
-</a>
+                <div class="glass-card p-5 md:p-6 rounded-xl border border-white/5 hover:border-cyber-neonGreen transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="w-10 h-10 bg-gray-900 rounded flex items-center justify-center text-cyber-neonGreen">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white font-orbitron">Bot & Tool</h3>
+                    </div>
+                    <p class="text-sm text-gray-400">Tool spam, auto comment, nuôi nick số lượng lớn giá rẻ.</p>
+                </div>
 
-<a class="btn telegram" href="https://t.me/linktelegram3">
-Telegram nhóm 3
-</a>
+                <div class="glass-card p-5 md:p-6 rounded-xl border border-white/5 hover:border-orange-500 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="w-10 h-10 bg-gray-900 rounded flex items-center justify-center text-orange-500">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white font-orbitron">Thiết Kế Web</h3>
+                    </div>
+                    <p class="text-sm text-gray-400">Website trọn gói, Landing Page bán hàng chuyển đổi cao.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</div>
+    <section id="contact" class="py-12 md:py-20 bg-cyber-black">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <div class="glass-card p-6 md:p-10 rounded-2xl border border-gray-800" data-aos="zoom-in">
+                <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-white text-center mb-6">LIÊN HỆ NGAY</h2>
 
-</div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    <a href="https://www.facebook.com/tadaiguul" class="flex items-center justify-center gap-2 p-3 bg-[#1877F2] text-white rounded hover:bg-[#1464cc] transition font-bold">
+                        <i class="fa-brands fa-facebook"></i> Facebook
+                    </a>
+                    <a href="https://t.me/embethuylinhhh" class="flex items-center justify-center gap-2 p-3 bg-[#0088cc] text-white rounded hover:bg-[#0077b5] transition font-bold">
+                        <i class="fa-brands fa-telegram"></i> Telegram
+                    </a>
+                    <a href="http://zaloapp.com/qr/p/19h6xarcde3c4" class="flex items-center justify-center gap-2 p-3 bg-[#0068FF] text-white rounded hover:bg-[#0057d9] transition font-bold">
+                        <i class="fa-solid fa-comment-dots"></i> Zalo
+                    </a>
+                </div>
 
+                <form class="space-y-4">
+                    <input type="text" class="w-full bg-gray-900 border border-gray-700 text-white p-3 rounded focus:border-cyber-neonBlue focus:outline-none" placeholder="Tên của bạn">
+                    <textarea class="w-full bg-gray-900 border border-gray-700 text-white p-3 rounded h-24 focus:border-cyber-neonPurple focus:outline-none" placeholder="Nội dung cần hỗ trợ..."></textarea>
+                    <button class="w-full bg-white text-black font-bold py-3 rounded hover:bg-cyber-neonBlue transition shadow-lg">GỬI TIN NHẮN</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black py-6 border-t border-gray-900 text-center">
+        <p class="text-gray-500 font-rajdhani text-sm">&copy; 2024 CYBER SERVICES.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Init AOS
+        AOS.init({ once: true, duration: 800 });
+
+        // MOBILE MENU LOGIC
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const icon = menuBtn.querySelector('i');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('active');
+            // Đổi icon từ bars sang xmark
+            if (mobileMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+
+        // Typewriter Logic
+        const textElement = document.getElementById('typewriter');
+        const phrases = ['Digital Marketing', 'Tăng Like / Follow', 'Thiết Kế Website', 'Tool Automation'];
+        let phraseIndex = 0, charIndex = 0, isDeleting = false;
+
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            textElement.textContent = currentPhrase.substring(0, charIndex + (isDeleting ? -1 : 1));
+            charIndex += isDeleting ? -1 : 1;
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true; typeSpeed = 2000;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; typeSpeed = 500;
+            }
+            setTimeout(type, typeSpeed);
+        }
+        document.addEventListener('DOMContentLoaded', type);
+
+        // Optimized Matrix Rain
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const chars = '01XY'; // Rút gọn ký tự để render nhẹ hơn trên mobile
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.ceil(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.1)'; // Tăng độ mờ để ít để lại vệt hơn trên mobile
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00f3ff';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) drops[i] = 0;
+                drops[i]++;
+            }
+            requestAnimationFrame(drawMatrix);
+        }
+        drawMatrix();
+    </script>
 </body>
 </html>
